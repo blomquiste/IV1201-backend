@@ -5,8 +5,8 @@ const Email = require('../integration/Email');
 /**
  * Class that is called by api layer to make database calls.
  */
-class Controller{
-  constructor(){
+class Controller {
+  constructor() {
     this.dao = new DAO();
     this.crypt = new Crypt();
   }
@@ -16,7 +16,7 @@ class Controller{
    * @param {Object} userdata contains username, password, confirmPassword, email and resetCode fields.
    * @returns 
    */
-  async updateUserDataByEmailCode(userdata){
+  async updateUserDataByEmailCode(userdata) {
     return await this.dao.updateUserDataByEmailCode(userdata);
   }
 
@@ -37,14 +37,14 @@ class Controller{
     }
   }
    */
-  async login(username, password){
+  async login(username, password) {
     const user = await this.dao.getLoginUserData(username);
-    if(user.length == 0){
+    if (user.length == 0) {
       return [];
     }
     const bool = await this.crypt.checkPassword(password, user.password);
 
-    if(bool){
+    if (bool) {
       return await this.dao.getUser(user.person_id);
     }
     return [];
@@ -62,7 +62,7 @@ class Controller{
    * @param password
    * @param username
    * @returns true if registration successful and false if not {Promise<boolean>}*/
-  async register(firstname, lastname, pid, email, password, username){
+  async register(firstname, lastname, pid, email, password, username) {
     try {
       const hash = await this.crypt.generateCryptPassword(password);
       await this.dao.register(firstname, lastname, pid, email, hash, username);
@@ -78,15 +78,15 @@ class Controller{
    * @param {String} email User email address
    * @returns true if restoration code was succesfully sent, otherwise false.
    */
-  async restoreAccountByEmail(email){
+  async restoreAccountByEmail(email) {
     const exists = await this.dao.checkUserEmail(email);
 
-    if(exists == undefined)
+    if (exists == undefined)
       return false;
-    if(exists != undefined && exists.username){
+    if (exists != undefined && exists.username) {
       return false;
     }
-    if(exists != undefined && exists.person_id){
+    if (exists != undefined && exists.person_id) {
       const mailer = new Email();
       const [messageSent, accountRestoreCode] = await mailer.sendAccountRestoreMail(exists.email)
       console.log(messageSent + " " + accountRestoreCode)
@@ -95,12 +95,12 @@ class Controller{
     }
     else
       return false;
-    }
-    
-  async update(person_id, name, surname, pnr, email){
-     await this.dao.updateUserInfo(person_id, name, surname, pnr, email);
   }
-  async fetch(){
+
+  async update(person_id, name, surname, pnr, email) {
+    await this.dao.updateUserInfo(person_id, name, surname, pnr, email);
+  }
+  async fetch() {
     return await this.dao.getCompetences();
   }
 
