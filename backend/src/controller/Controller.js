@@ -1,4 +1,5 @@
 const DAO = require('../integration/DAO');
+const Crypt = require('../model/Crypt');
 const Email = require('../integration/Email');
 
 /**
@@ -7,6 +8,7 @@ const Email = require('../integration/Email');
 class Controller{
   constructor(){
     this.dao = new DAO();
+    this.crypt = new Crypt();
   }
 
   /**
@@ -36,7 +38,18 @@ class Controller{
   }
    */
   async login(username, password){
-    return await this.dao.login(username, password);
+    const user = await this.dao.getLoginUserData(username);
+    if(user.length == 0){
+      return [];
+    }
+    const bool = await this.crypt.checkPassword(password, user.password);
+
+    if(bool){
+      return await this.dao.getUser(user.person_id);
+    }
+    return [];
+
+    //return await this.dao.login(username, password);
   }
 
   /**
@@ -51,7 +64,8 @@ class Controller{
    * @returns true if registration successful and false if not {Promise<boolean>}*/
   async register(firstname, lastname, pid, email, password, username){
     try {
-      await this.dao.register(firstname, lastname, pid, email, password, username);
+      const hash = await this.crypt.generateCryptPassword(password);
+      await this.dao.register(firstname, lastname, pid, email, hash, username);
       return true;
     } catch (error) {
       console.error('Error registering user:', error);
