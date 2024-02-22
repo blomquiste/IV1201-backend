@@ -11,7 +11,7 @@ require('dotenv').config({
 });
 
 //Constructor to create module and establish connection to database.
-class DAO {
+class DAO {/*
   constructor() {
     const {Pool, Client} = require('pg');
     this.pool = new Pool({
@@ -24,8 +24,23 @@ class DAO {
         rejectUnauthorized: false
       }
     })
+  }*/
+  /*
+  PORT = 5433
+HOST = localhost
+NAME = garch
+USER = postgres
+PASSWD =admin */
+  constructor() {
+    const {Pool, Client} = require('pg');
+    this.pool = new Pool({
+      user: process.env.USER,
+      host: process.env.HOST,
+      database: process.env.NAME,
+      password: process.env.PASSWD,
+      port: process.env.PORT
+    })
   }
-
   /**
    * Updates the user object in the database with the supplied username and password, if the
    * reset code is equal to the one that was sent out last. If the user data is updated also removes the 
@@ -102,7 +117,9 @@ class DAO {
   * @return selected user if password and username match.
   */
   async login(username, userpassword) {
+    console.log("hello from dao")
     const client = await this.pool.connect();
+    
     try {
       await client.query('BEGIN')
       const { rows } = await client.query("SELECT row_to_json(user_alias)" +
