@@ -95,12 +95,12 @@ class Controller {
     }
     else
       return false;
+    }
+    
+  async update(person_id, name, surname, pnr, email){
+     await this.dao.updateUserInfo(person_id, name, surname, pnr, email);
   }
-
-  async update(person_id, name, surname, pnr, email) {
-    await this.dao.updateUserInfo(person_id, name, surname, pnr, email);
-  }
-  async fetch() {
+  async fetch(){
     return await this.dao.getCompetences();
   }
 
