@@ -39,6 +39,7 @@ class Controller {
    */
   async login(username, password) {
     const hashedpassword = await this.dao.getLoginUserData(username);
+    console.log(hashedpassword)
     if (user.length == 0) {
       return [];
     }
