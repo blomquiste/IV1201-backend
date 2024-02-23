@@ -82,12 +82,37 @@ class Controller{
     else
       return false;
     }
-    
+
+  /**
+   *
+   * @param person_id
+   * @param name
+   * @param surname
+   * @param pnr
+   * @param email
+   * @returns {Promise<void>}
+   */
   async update(person_id, name, surname, pnr, email){
      await this.dao.updateUserInfo(person_id, name, surname, pnr, email);
   }
+
+  /**
+   *
+   * @returns {Promise<*|undefined>}
+   */
   async fetch(){
     return await this.dao.getCompetences();
+  }
+
+  /**
+   *
+   * @returns {Promise<*|undefined>}
+   */
+  async setCompetence(person_id, competence_id, years_of_experience){
+    return await this.dao.createCompetenceProfile(person_id, competence_id, years_of_experience);
+  }
+  async setAvailability(person_id, from_date, to_date){
+    return await this.dao.createAvailability(person_id, from_date, to_date);
   }
 
 }

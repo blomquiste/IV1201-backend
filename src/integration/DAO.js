@@ -12,6 +12,17 @@ require('dotenv').config({
 
 //Constructor to create module and establish connection to database.
 class DAO {
+  /*
+  constructor() {
+    const {Pool, Client} = require('pg');
+    this.pool = new Pool({
+      user: process.env.USER,
+      host: process.env.HOST,
+      database: process.env.NAME,
+      password: process.env.PASSWD,
+      port: process.env.PORT
+    })
+  }*/
   constructor() {
     const {Pool, Client} = require('pg');
     this.pool = new Pool({
@@ -25,6 +36,7 @@ class DAO {
       }
     })
   }
+
 
   /**
    * Updates the user object in the database with the supplied username and password, if the
@@ -148,22 +160,8 @@ class DAO {
       client.end();
     }
   }
-  /* TODO:
-  async getRowsFromTable(){
-    const client = await this.pool.connect();
-    try {
-      const { rows } = await client.query("SELECT name FROM public.competence");
-      console.log("DAO: ", rows);
-      return rows;
-    } catch (error) {
-      console.error('Error fetching rows from table:', error);
-      throw new Error('Database error: ' + error.message);
-    } finally {
-      client.end();
-    }
-  };*/
   /**
-   * TODO handle transactions
+   * Updates the rows in the 'person' table given a person_id
    * @param person_id
    * @param name
    * @param surname
@@ -175,8 +173,8 @@ class DAO {
     const client = await this.pool.connect();
     try {
       await client.query('BEGIN');
-      const { rows } = await client.query("UPDATE person " +
-       "SET name = $2, surname = $3, pnr = $4, email = $5 "+
+      const { rows } = await client.query("UPDATE public.person " +
+       "SET (name = $2, surname = $3, pnr = $4, email = $5) "+
        "WHERE person_id = $1 "+
        "RETURNING *;",
           [person_id, name, surname, pnr, email]

@@ -15,7 +15,7 @@ const APP_ROOT_DIR = path.join(__dirname, '..');
 
 require('dotenv').config({
     path: path.join(APP_ROOT_DIR, '.env'),
-    //example: path.join(APP_ROOT_DIR, '.env-example'),
+    //example: path.join(APP_ROOT_DIR, '.env'),
 });
  
 const express = require('express');
@@ -43,10 +43,10 @@ app.use((req, res, next) => {
 /**
  * Handles requests to /.
  * @returns {HTTPResponse} with a dummy message. 
- */
 app.get('/', (req, res) => {
   return res.send('hello from group 16');
 });
+ */
 
 const loginRoute = require('./api/login')
 app.use(loginRoute);
@@ -59,11 +59,18 @@ app.use(restoreAccountRoute);
 
 const UpdateAccountByEmailCodeRoute = require('./api/UpdateAccountByEmailCode');
 app.use(UpdateAccountByEmailCodeRoute);
+
 const fetchRoute = require('./api/fetch')
 app.use(fetchRoute);
 
 const updateRoute = require('./api/update')
 app.use(updateRoute);
+
+const competenceRoute = require('./api/competence')
+app.use(competenceRoute);
+
+const availabilityRoute = require('./api/availability')
+app.use(availabilityRoute);
 
 const errorHandler = require('./api/ErrorHandler')
 app.use(errorHandler);
