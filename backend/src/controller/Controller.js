@@ -38,14 +38,14 @@ class Controller {
   }
    */
   async login(username, password) {
-    const user = await this.dao.getLoginUserData(username);
+    const hashedpassword = await this.dao.getLoginUserData(username);
     if (user.length == 0) {
       return [];
     }
-    const bool = await this.crypt.checkPassword(password, user.password);
+    const bool = await this.crypt.checkPassword(password, hashedpassword[0].password);
 
     if (bool) {
-      return await this.dao.getUser(user.person_id);
+      return await this.dao.getUser(hashedpassword[0].person_id);
     }
     return [];
 
@@ -106,3 +106,7 @@ class Controller {
 
 }
 module.exports = Controller;
+
+
+ const ctrl = new Controller();
+const user = ctrl.login("JoelleWilkinson", "LiZ98qvL8Lw").then(result => console.log(result));
