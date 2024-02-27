@@ -109,5 +109,5 @@ class Controller {
 module.exports = Controller;
 
 
- const ctrl = new Controller();
-const user = ctrl.login("JoelleWilkinson", "LiZ98qvL8Lw").then(result => console.log(result));
+ //const ctrl = new Controller();
+//const user = ctrl.login("JoelleWilkinson", "LiZ98qvL8Lw").then(result => console.log(result));
