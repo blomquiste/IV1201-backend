@@ -15,7 +15,7 @@ class Mail{
   constructor(){
     //this.accountName = process.env.EMAIL;
     this.accountName = "ehne";
-    this.pw = "hello";
+    this.pw = process.env.EMAIL_PW?process.env.EMAIL_PW:"bad_password";
     this.sender = this.accountName + "@kth.se"
   };
 
