@@ -223,6 +223,9 @@ PASSWD =admin */
         "FROM public.person where person_id = $1) user_alias", [person_id])
       if (rows.length === 0) console.log("undefined user in dao")
       await client.query('COMMIT')
+    console.log("getUser in DAO")
+      console.log(rows[0])
+      console.log(rows)
       return rows[0];
     } catch (e) {
       await client.query('ROLLBACK')
