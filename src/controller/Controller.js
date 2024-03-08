@@ -41,30 +41,32 @@ class Controller {
      * @param {String} username username
      * @param {String} password password
      */
-    async login(username, password) {
-        const connection = await this.dao.getConnection();
-        try {
-            await connection.query('BEGIN')
-            const hashedpassword = await this.dao.getLoginUserData(connection, username);
-            if (hashedpassword[0] == undefined) {
-                await connection.query('COMMIT')
-                return undefined;
-            }
-            const bool = await this.crypt.checkPassword(password, hashedpassword[0].password);
-            if (bool) {
-                const result = await this.dao.getUser(connection, hashedpassword[0].person_id);
-                await connection.query('COMMIT')
-                return result;
-            }
-            await connection.query('COMMIT')
-            return undefined;
-        } catch (e) {
-            await connection.query('ROLLBACK')
-            console.error(e);
-            throw new Error("database error")
-        } finally {
-            connection.release()
-        }
+  
+     async login(username, password) {
+      const connection = await this.dao.getConnection();
+      try {
+          await connection.query('BEGIN')
+          const hashedpassword = await this.dao.getLoginUserData(connection, username);
+          if (hashedpassword[0] == undefined) {
+              await connection.query('COMMIT')
+              return undefined;
+          }
+          const bool = await this.crypt.checkPassword(password, hashedpassword[0].password);
+          if (bool) {
+              const result = await this.dao.getUser(connection, hashedpassword[0].person_id);
+              await connection.query('COMMIT')
+              console.log(result)
+              return result;
+          }
+          await connection.query('COMMIT')
+          return undefined;
+      } catch (e) {
+          await connection.query('ROLLBACK')
+          console.error(e);
+          throw new Error("database error")
+      } finally {
+          connection.release()
+      }
     }
 
     /**

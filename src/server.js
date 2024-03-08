@@ -32,18 +32,22 @@ app.use(cookieParser());
  * CORS configuration to only allow requests from frontend and localhost.
  */
 app.use((req, res, next) => {
-  const allowedOrigins = ["https://archdes-frontend-5528c891010d.herokuapp.com", "http://localhost:3000"]
-  let origin = "";
-  if (allowedOrigins.indexOf(req.get('origin')) === 0) {
-    origin = "https://archdes-frontend-5528c891010d.herokuapp.com";
-  } else if (allowedOrigins.indexOf(req.get('origin')) === 1) {
-    origin = "http://localhost:3000";
-  } else {
-    console.log("Origin denied by CORS");
-    res.status(500).end(); //should probably be 403 access denied but the frontend only handles 500 codes atm
-    return;
-  }
-  res.header("Access-Control-Allow-Origin", origin);
+    const allowedOrigins=["https://archdes-frontend-5528c891010d.herokuapp.com", "http://localhost:3000"]
+    let origin = "";
+    console.log(origin)
+    if(allowedOrigins.indexOf(req.get('origin')) === 0) {
+        origin = "https://archdes-frontend-5528c891010d.herokuapp.com";
+    } else if (allowedOrigins.indexOf(req.get('origin')) === 1){
+        origin = "http://localhost:3000";
+    } else {
+      console.log("Origin denied by CORS");
+      res.status(500).end(); //should probably be 403 access denied but the frontend only handles 500 codes atm
+      return;
+    }
+    console.log(origin)
+    res.header("Access-Control-Allow-Origin", origin);
+
+ 
     //res.header("Access-Control-Allow-Origin", "https://archdes-frontend-5528c891010d.herokuapp.com")
     res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authcookie");
