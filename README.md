@@ -21,8 +21,8 @@ The application is deployed with Heroku and can be found on this URL: https://ar
 * Create the database by running the existing-database.sql script in psql
 * Clone this repository ```git clone ...```
 * In you terminal, go to the cloned directory ```cd .../IV1201-backend```
-* Install all required packages with npm install in both frontend and backend directories ```cd backend; npm install; ```
-* Run ```npm start```
+* Install all required packages with npm install.
+* Start the server with ```npm run dev```
 
 ## File structure
 ```
